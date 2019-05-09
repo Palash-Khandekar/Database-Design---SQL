@@ -1,0 +1,213 @@
+#inspection table
+
+#valid codes
+use fodm_project;
+DELIMITER $$
+drop trigger if exists trg_code_before_insert;
+$$
+create trigger trg_code_before_insert before insert on inspection_type
+for each row
+begin
+if char_length(new.code) != 3 then
+signal sqlstate '45000'
+set message_text = "Inspection codes must be of 3 characters";
+end if;
+end;
+$$
+
+drop trigger if exists trg_code_before_update;
+$$
+create trigger trg_code_before_update before update on inspection_type
+for each row
+begin
+if char_length(new.code) != 3 then
+signal sqlstate '45000'
+set message_text = "Inspection codes must be of 3 characters";
+end if;
+end;
+$$
+
+
+drop trigger if exists trg_month_check_before_insert;
+$$
+#cannot have more than 5 inspection per month
+create trigger trg_month_check_before_insert before insert on Inspection
+for each row
+begin
+
+if new.inspector_id < 0 then
+signal sqlstate '45000'
+	set message_text = "Id cannot be negative";
+end if;
+
+if char_length(new.inspector_id) < 5 then
+set new.inspector_id = lpad(lpad(new.inspector_id, 4, 0),5,1);
+end if;
+
+
+if (select count(*) from inspection where inspector_id =new.inspector_id and year(inspection_date) = year(new.inspection_date)
+		and month(inspection_date) = month(new.inspection_date)) > 4 then
+        signal sqlstate '45000'
+		set message_text = "Only 5 inspections allowed each month";
+end if;
+
+if new.score not between 0 and 100 then
+	signal sqlstate '45000'
+	set message_text = "Score is between 0 and 100";
+end if;
+
+IF((SELECT  COUNT(prereq) FROM prerequisites WHERE pre_code =  NEW.insp_code AND prereq IN 
+			(SELECT insp_code FROM Inspection WHERE Building_address = NEW.Building_address AND score >= 75)) != 
+			(SELECT  COUNT(prereq) FROM Prerequisites WHERE pre_code = NEW.insp_code)) THEN
+			SIGNAL SQLSTATE '12345'
+			SET MESSAGE_TEXT = 'Prerequisite work not met';
+    END IF;
+    
+    
+    
+    
+    
+end;
+$$
+
+drop trigger if exists trg_month_check_before_update;
+$$
+create trigger trg_month_check_before_update before update on Inspection
+for each row
+begin
+
+if new.inspector_id < 0 then
+signal sqlstate '45000'
+	set message_text = "Id cannot be negative";
+end if;
+
+if char_length(new.inspector_id) < 5 then
+set new.inspector_id = lpad(lpad(new.inspector_id, 4, 0),5,1);
+end if;
+
+if (select count(*) from inspection where inspector_id = new.inspector_id and year(inspection_date) = year(new.inspection_date)
+		and month(inspection_date) = month(new.inspection_date)) > 4 then
+        signal sqlstate '45000'
+		set message_text = "Only 5 inspections allowed each month";
+end if;
+
+if new.score != old.score then
+signal sqlstate '45000'
+set message_text = "score cannot change";
+end if;
+
+
+IF((SELECT  COUNT(prereq) FROM prerequisites WHERE pre_code =  NEW.insp_code AND prereq IN 
+			(SELECT insp_code FROM Inspection WHERE Building_address = NEW.Building_address AND score >= 75)) != 
+			(SELECT  COUNT(prereq) FROM Prerequisites WHERE pre_code = NEW.insp_code)) THEN
+			SIGNAL SQLSTATE '12345'
+			SET MESSAGE_TEXT = 'Prerequisite work not met';
+    END IF;
+end;
+$$
+
+#5digit inspector id
+
+drop trigger if exists check_inspId_before_insert;
+$$
+create trigger check_inspId_before_insert before insert on inspector
+for each row
+begin
+
+if new.empid > 99999 then
+signal sqlstate '45000'
+set message_text = "empid is out of range";
+end if;
+
+set new.empid = lpad(lpad(new.empid, 4, 0),5,1);
+end;
+$$
+
+drop trigger if exists check_inspId_before_update;
+$$
+create trigger check_inspId_before_update before update on inspector
+for each row
+begin
+if new.empid > 99999 then
+signal sqlstate '45000'
+set message_text = "empid is out of range";
+end if;
+
+set new.empid = lpad(lpad(new.empid, 4, 0),5,1);
+end;
+$$
+
+
+#5digit license
+drop trigger if exists check_licNo_before_insert;
+$$
+create trigger check_licNo_before_insert before insert on builder
+for each row
+begin
+set new.license_no = lpad(new.license_no, 5, '0');
+if new.license_no < 10000 or new.license_no > 99999 then
+signal sqlstate '45000'
+set message_text = "license number is out of range";
+end if;
+end;
+$$
+
+drop trigger if exists check_licNo_before_update;
+$$
+create trigger check_licNo_before_update before update on builder
+for each row
+begin
+set new.license_no = lpad(new.license_no, 5, '0');
+
+if new.license_no < 10000 or new.license_no > 99999 then
+signal sqlstate '45000'
+set message_text = "license number is out of range";
+end if;
+end;
+$$
+
+drop trigger if exists check_cost_insert;
+$$
+create trigger check_cost_insert before insert on inspection_cost
+for each row
+begin
+if new.cost < 0 then
+signal sqlstate '45000'
+set message_text = "inspection cost cannot be negative";
+end if;
+end;
+$$
+
+drop trigger if exists check_cost_update;
+$$
+create trigger check_cost_update before update on inspection_cost
+for each row
+begin
+if new.cost < 0 then
+signal sqlstate '45000'
+set message_text = "inspection cost cannot be negative";
+end if;
+end;
+$$
+
+
+
+-- function calculate cost
+$$
+CREATE FUNCTION calculate_cost(p_code varchar(3), p_date date)
+returns int
+DETERMINISTIC
+BEGIN 
+  DECLARE final_cost int;
+  SET final_cost = (select cost from inspection_cost
+		where code = p_code and p_date between start_date and end_date);
+  RETURN final_cost;
+END$$
+
+
+$$
+DELIMITER ;
+
+
+
+
