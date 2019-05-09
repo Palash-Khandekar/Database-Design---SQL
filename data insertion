@@ -1,0 +1,105 @@
+INSERT INTO `fodm_project`.`inspection_type` (`code`, `insp_type`) VALUES ('FRM', 'Framing');
+INSERT INTO `fodm_project`.`inspection_type` (`code`, `insp_type`) VALUES ('PLU', 'Plumbing');
+INSERT INTO `fodm_project`.`inspection_type` (`code`, `insp_type`) VALUES ('POL', 'Pool');
+INSERT INTO `fodm_project`.`inspection_type` (`code`, `insp_type`) VALUES ('ELE', 'Electrical');
+INSERT INTO `fodm_project`.`inspection_type` (`code`, `insp_type`) VALUES ('SAF', 'Safety');
+INSERT INTO `fodm_project`.`inspection_type` (`code`, `insp_type`) VALUES ('HAC', 'Heating/Cooling');
+INSERT INTO `fodm_project`.`inspection_type` (`code`, `insp_type`) VALUES ('FNL', 'Final');
+INSERT INTO `fodm_project`.`inspection_type` (`code`, `insp_type`) VALUES ('FN2', 'Final - 2 needed');
+INSERT INTO `fodm_project`.`inspection_type` (`code`, `insp_type`) VALUES ('FN3', 'Final - plumbing');
+INSERT INTO `fodm_project`.`inspection_type` (`code`, `insp_type`) VALUES ('HIS', 'Historical accuracy');
+
+INSERT INTO `fodm_project`.`inspection_cost` (`code`,`Cost`) VALUES ('FRM','100');
+INSERT INTO `fodm_project`.`inspection_cost` (`code`,`Cost`) VALUES ('PLU','100');
+INSERT INTO `fodm_project`.`inspection_cost` (`code`,`Cost`) VALUES ('POL','50');
+INSERT INTO `fodm_project`.`inspection_cost` (`code`,`Cost`) VALUES ('ELE','100');
+INSERT INTO `fodm_project`.`inspection_cost` (`code`,`Cost`) VALUES ('SAF','50');
+INSERT INTO `fodm_project`.`inspection_cost` (`code`,`Cost`) VALUES ('HAC','100');
+INSERT INTO `fodm_project`.`inspection_cost` (`code`,`Cost`) VALUES ('FNL','200');
+INSERT INTO `fodm_project`.`inspection_cost` (`code`,`Cost`) VALUES ('FN2','150');
+INSERT INTO `fodm_project`.`inspection_cost` (`code`,`Cost`) VALUES ('FN3','150');
+INSERT INTO `fodm_project`.`inspection_cost` (`code`,`Cost`) VALUES ('HIS','100');
+
+
+INSERT INTO `fodm_project`.`prerequisites` (`pre_code`, `prereq`) VALUES ('PLU', 'FRM');
+INSERT INTO `fodm_project`.`prerequisites` (`pre_code`, `prereq`) VALUES ('POL', 'PLU');
+INSERT INTO `fodm_project`.`prerequisites` (`pre_code`, `prereq`) VALUES ('ELE', 'FRM');
+INSERT INTO `fodm_project`.`prerequisites` (`pre_code`, `prereq`) VALUES ('HAC', 'ELE');
+INSERT INTO `fodm_project`.`prerequisites` (`pre_code`, `prereq`) VALUES ('FNL', 'HAC');
+INSERT INTO `fodm_project`.`prerequisites` (`pre_code`, `prereq`) VALUES ('FNL', 'PLU');
+INSERT INTO `fodm_project`.`prerequisites` (`pre_code`, `prereq`) VALUES ('FN2', 'ELE');
+INSERT INTO `fodm_project`.`prerequisites` (`pre_code`, `prereq`) VALUES ('FN2', 'PLU');
+INSERT INTO `fodm_project`.`prerequisites` (`pre_code`, `prereq`) VALUES ('FN3', 'PLU');
+
+
+
+INSERT INTO `fodm_project`.`inspector` (`empid`, `insp_name`, `hire_date`) VALUES ('101', 'Inspector-1', '1984/11/8');
+INSERT INTO `fodm_project`.`inspector` (`empid`, `insp_name`, `hire_date`) VALUES ('102', 'Inspector-2', '1994/11/8');
+INSERT INTO `fodm_project`.`inspector` (`empid`, `insp_name`, `hire_date`) VALUES ('103', 'Inspector-3', '2004/11/8');
+INSERT INTO `fodm_project`.`inspector` (`empid`, `insp_name`, `hire_date`) VALUES ('104', 'Inspector-4', '2014/11/1');
+INSERT INTO `fodm_project`.`inspector` (`empid`, `insp_name`, `hire_date`) VALUES ('105', 'Inspector-5', '2018/11/1');
+
+
+
+INSERT INTO `fodm_project`.`builder` (`license_no`, `name`, `address`) VALUES ('12345', 'Builder-1', '5554 Amesbury Drive, Dallas, TX');
+INSERT INTO `fodm_project`.`builder` (`license_no`, `name`, `address`) VALUES ('23456', 'Builder-2', '5454 Lovers Lane Drive, Dallas, TX');
+INSERT INTO `fodm_project`.`builder` (`license_no`, `name`, `address`) VALUES ('34567', 'Builder-3', '3184 Mockingbird Drive, Dallas, TX');
+INSERT INTO `fodm_project`.`builder` (`license_no`, `name`, `address`) VALUES ('45678', 'Builder-4', '8874 Richardson, Dallas TX');
+INSERT INTO `fodm_project`.`builder` (`license_no`, `name`, `address`) VALUES ('12321', 'Builder-5', '7874 Skillman street, Dallas, TX');
+
+
+INSERT INTO `fodm_project`.`building` (`builder_no`,`address`,`building_type`,`size`, `dateFirstActivity`) VALUES ('12345', '100 Main St., Dallas, TX', 'commerical', '250000', '1999/12/31');
+INSERT INTO `fodm_project`.`building` (`builder_no`,`address`,`building_type`,`size`, `dateFirstActivity`) VALUES ('12345', '300 Oak St., Dallas, TX', 'residential', '3000', '2000/1/1');
+INSERT INTO `fodm_project`.`building` (`builder_no`,`address`,`building_type`,`size`, `dateFirstActivity`) VALUES ('12345', '302 Oak St., Dallas, TX', 'residential', '4000', '2001/2/1');
+INSERT INTO `fodm_project`.`building` (`builder_no`,`address`,`building_type`,`size`, `dateFirstActivity`) VALUES ('12345', '304 Oak St., Dallas, TX', 'residential', '1500', '2002/3/1');
+INSERT INTO `fodm_project`.`building` (`builder_no`,`address`,`building_type`,`size`, `dateFirstActivity`) VALUES ('12345', '306 Oak St., Dallas, TX', 'residential', '1500', '2003/4/1');
+INSERT INTO `fodm_project`.`building` (`builder_no`,`address`,`building_type`,`size`, `dateFirstActivity`) VALUES ('12345', '308 Oak St., Dallas, TX', 'residential', '2000', '2003/4/1');
+INSERT INTO `fodm_project`.`building` (`builder_no`,`address`,`building_type`,`size`, `dateFirstActivity`) VALUES ('23456', '100 Industrial Ave., Fort Worth, TX', 'commerical', '100000', '2005/6/1');
+INSERT INTO `fodm_project`.`building` (`builder_no`,`address`,`building_type`,`size`, `dateFirstActivity`) VALUES ('23456', '101 Industrial Ave., Fort Worth, TX', 'commerical', '80000', '2005/6/1');
+INSERT INTO `fodm_project`.`building` (`builder_no`,`address`,`building_type`,`size`, `dateFirstActivity`) VALUES ('23456', '102 Industrial Ave., Fort Worth, TX', 'commerical', '75000', '2005/6/1');
+INSERT INTO `fodm_project`.`building` (`builder_no`,`address`,`building_type`,`size`, `dateFirstActivity`) VALUES ('23456', '103 Industrial Ave., Fort Worth, TX', 'commerical', '50000', '2005/6/1');
+INSERT INTO `fodm_project`.`building` (`builder_no`,`address`,`building_type`,`size`, `dateFirstActivity`) VALUES ('23456', '104 Industrial Ave., Fort Worth, TX', 'commerical', '80000', '2005/6/1');
+INSERT INTO `fodm_project`.`building` (`builder_no`,`address`,`building_type`,`size`, `dateFirstActivity`) VALUES ('23456', '105 Industrial Ave., Fort Worth, TX', 'commerical', '90000', '2005/6/1');
+INSERT INTO `fodm_project`.`building` (`builder_no`,`address`,`building_type`,`size`, `dateFirstActivity`) VALUES ('45678', '100 Winding Wood, Carrollton, TX', 'residential', '2500', null);
+INSERT INTO `fodm_project`.`building` (`builder_no`,`address`,`building_type`,`size`, `dateFirstActivity`) VALUES ('45678', '102 Winding Wood, Carrollton, TX', 'residential', '2800', null);
+INSERT INTO `fodm_project`.`building` (`builder_no`,`address`,`building_type`,`size`, `dateFirstActivity`) VALUES ('12321', '210 Cherry Bark Lane, Plano, TX', 'residential', '3200', '2016/10/1');
+INSERT INTO `fodm_project`.`building` (`builder_no`,`address`,`building_type`,`size`, `dateFirstActivity`) VALUES ('12321', '212 Cherry Bark Lane, Plano, TX', 'residential', null, null);
+INSERT INTO `fodm_project`.`building` (`builder_no`,`address`,`building_type`,`size`, `dateFirstActivity`) VALUES ('12321', '214 Cherry Bark Lane, Plano, TX', 'residential', null, null);
+INSERT INTO `fodm_project`.`building` (`builder_no`,`address`,`building_type`,`size`, `dateFirstActivity`) VALUES ('12321', '216 Cherry Bark Lane, Plano, TX', 'residential', null, null);
+
+INSERT INTO `fodm_project`.`Inspection` (`inspection_date`,`insp_code`,`inspector_id`,`score`,`info`,`building_address`) VALUES ('2018/10/1', 'FRM', '103', '100', 'no problems noted', '100 Winding Wood, Carrollton, TX');
+INSERT INTO `fodm_project`.`Inspection` (`inspection_date`,`insp_code`,`inspector_id`,`score`,`info`,`building_address`) VALUES ('2018/10/1', 'FRM', '101', '100', 'no problems noted', '300 Oak St., Dallas, TX');
+INSERT INTO `fodm_project`.`Inspection` (`inspection_date`,`insp_code`,`inspector_id`,`score`,`info`,`building_address`) VALUES ('2018/10/1', 'FRM', '102', '100', 'no problems noted', '302 Oak St., Dallas, TX');
+INSERT INTO `fodm_project`.`Inspection` (`inspection_date`,`insp_code`,`inspector_id`,`score`,`info`,`building_address`) VALUES ('2018/10/2', 'PLU', '101', '90', 'minor leak, corrected', '300 Oak St., Dallas, TX');
+INSERT INTO `fodm_project`.`Inspection` (`inspection_date`,`insp_code`,`inspector_id`,`score`,`info`,`building_address`) VALUES ('2018/10/2', 'PLU', '102', '25', 'massive leaks', '302 Oak St., Dallas, TX');
+INSERT INTO `fodm_project`.`Inspection` (`inspection_date`,`insp_code`,`inspector_id`,`score`,`info`,`building_address`) VALUES ('2018/10/3', 'ELE', '101', '80', 'exposed junction box', '300 Oak St., Dallas, TX');
+INSERT INTO `fodm_project`.`Inspection` (`inspection_date`,`insp_code`,`inspector_id`,`score`,`info`,`building_address`) VALUES ('2018/10/4', 'HAC', '101', '80', 'duct needs taping', '300 Oak St., Dallas, TX');
+INSERT INTO `fodm_project`.`Inspection` (`inspection_date`,`insp_code`,`inspector_id`,`score`,`info`,`building_address`) VALUES ('2018/10/5', 'FNL', '101', '90', 'ready for owner', '300 Oak St., Dallas, TX');
+INSERT INTO `fodm_project`.`Inspection` (`inspection_date`,`insp_code`,`inspector_id`,`score`,`info`,`building_address`) VALUES ('2018/10/8', 'PLU', '102', '50', 'still leaking', '302 Oak St., Dallas, TX');
+INSERT INTO `fodm_project`.`Inspection` (`inspection_date`,`insp_code`,`inspector_id`,`score`,`info`,`building_address`) VALUES ('2018/10/12', 'FRM', '103', '85', 'no issues but messy', '210 Cherry Bark Lane, Plano, TX');
+INSERT INTO `fodm_project`.`Inspection` (`inspection_date`,`insp_code`,`inspector_id`,`score`,`info`,`building_address`) VALUES ('2018/10/12', 'PLU', '102', '80', 'no leaks, but messy', '302 Oak St., Dallas, TX');
+INSERT INTO `fodm_project`.`Inspection` (`inspection_date`,`insp_code`,`inspector_id`,`score`,`info`,`building_address`) VALUES ('2018/10/14', 'SAF', '104', '100', 'no problems noted', '210 Cherry Bark Lane, Plano, TX');
+INSERT INTO `fodm_project`.`Inspection` (`inspection_date`,`insp_code`,`inspector_id`,`score`,`info`,`building_address`) VALUES ('2018/10/14', 'ELE', '102', '100', 'no problems noted', '302 Oak St., Dallas, TX');
+INSERT INTO `fodm_project`.`Inspection` (`inspection_date`,`insp_code`,`inspector_id`,`score`,`info`,`building_address`) VALUES ('2018/10/20', 'PLU', '103', '100', 'everything working', '100 Winding Wood, Carrollton, TX');
+INSERT INTO `fodm_project`.`Inspection` (`inspection_date`,`insp_code`,`inspector_id`,`score`,`info`,`building_address`) VALUES ('2018/10/25', 'ELE', '103', '100', 'no problems noted', '100 Winding Wood, Carrollton, TX');
+INSERT INTO `fodm_project`.`Inspection` (`inspection_date`,`insp_code`,`inspector_id`,`score`,`info`,`building_address`) VALUES ('2018/11/1', 'FRM', '103', '100', 'no problems noted', '102 Winding Wood, Carrollton, TX');
+INSERT INTO `fodm_project`.`Inspection` (`inspection_date`,`insp_code`,`inspector_id`,`score`,`info`,`building_address`) VALUES ('2018/11/1', 'HAC', '102', '80', 'duct needs taping', '302 Oak St., Dallas, TX');
+INSERT INTO `fodm_project`.`Inspection` (`inspection_date`,`insp_code`,`inspector_id`,`score`,`info`,`building_address`) VALUES ('2018/11/2', 'HAC', '103', '100', 'no problems noted', '100 Winding Wood, Carrollton, TX');
+INSERT INTO `fodm_project`.`Inspection` (`inspection_date`,`insp_code`,`inspector_id`,`score`,`info`,`building_address`) VALUES ('2018/11/2', 'PLU', '103', '90', 'minor leak, corrected', '102 Winding Wood, Carrollton, TX');
+INSERT INTO `fodm_project`.`Inspection` (`inspection_date`,`insp_code`,`inspector_id`,`score`,`info`,`building_address`) VALUES ('2018/11/2', 'FRM', '105', '100', 'tbd', '105 Industrial Ave., Fort Worth, TX');
+INSERT INTO `fodm_project`.`Inspection` (`inspection_date`,`insp_code`,`inspector_id`,`score`,`info`,`building_address`) VALUES ('2018/11/2', 'FNL', '102', '90', 'ready for owner', '302 Oak St., Dallas, TX');
+INSERT INTO `fodm_project`.`Inspection` (`inspection_date`,`insp_code`,`inspector_id`,`score`,`info`,`building_address`) VALUES ('2018/11/3', 'ELE', '103', '80', 'exposed junction box', '102 Winding Wood, Carrollton, TX');
+INSERT INTO `fodm_project`.`Inspection` (`inspection_date`,`insp_code`,`inspector_id`,`score`,`info`,`building_address`) VALUES ('2018/11/4', 'PLU', '103', '80', 'duct needs sealing', '210 Cherry Bark Lane, Plano, TX');
+INSERT INTO `fodm_project`.`Inspection` (`inspection_date`,`insp_code`,`inspector_id`,`score`,`info`,`building_address`) VALUES ('2018/11/5', 'POL', '105', '90', 'ready for owner', '210 Cherry Bark Lane, Plano, TX');
+INSERT INTO `fodm_project`.`Inspection` (`inspection_date`,`insp_code`,`inspector_id`,`score`,`info`,`building_address`) VALUES ('2018/11/6', 'FRM', '105', '100', 'okay', '100 Industrial Ave., Fort Worth, TX');
+INSERT INTO `fodm_project`.`Inspection` (`inspection_date`,`insp_code`,`inspector_id`,`score`,`info`,`building_address`) VALUES ('2018/11/8', 'PLU', '102', '100', 'no leaks', '100 Industrial Ave., Fort Worth, TX');
+INSERT INTO `fodm_project`.`Inspection` (`inspection_date`,`insp_code`,`inspector_id`,`score`,`info`,`building_address`) VALUES ('2018/11/12', 'POL', '102', '80', 'pool equipment okay', '100 Industrial Ave., Fort Worth, TX');
+INSERT INTO `fodm_project`.`Inspection` (`inspection_date`,`insp_code`,`inspector_id`,`score`,`info`,`building_address`) VALUES ('2018/11/14', 'FN3', '102', '100', 'no problems noted', '100 Industrial Ave., Fort Worth, TX');
+INSERT INTO `fodm_project`.`Inspection` (`inspection_date`,`insp_code`,`inspector_id`,`score`,`info`,`building_address`) VALUES ('2018/11/14', 'FNL', '103', '90', 'REJECT TOO MANY', '100 Winding Wood, Carrollton, TX');
+
+
+
+
+Insert into `fodm_project`.`pending_inspection`(`date`,`type`,`building_address`) values('2018/9/1','FNL','105 Industrial Ave., Fort Worth, TX');
+Insert into `fodm_project`.`pending_inspection`(`date`,`type`,`building_address`) values('2018/10/26','FRM','212 Cherry Bark Lane, Plano, TX');
+Insert into `fodm_project`.`pending_inspection`(`date`,`type`,`building_address`) values('2018/11/4','PLU','212 Cherry Bark Lane, Plano, TX');
