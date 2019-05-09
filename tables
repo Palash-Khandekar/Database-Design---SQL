@@ -1,0 +1,94 @@
+
+drop database fodm_project;
+
+create database FODM_project;
+use FODM_project;
+
+CREATE TABLE inspector (
+    empid int not null,
+    insp_name CHAR(30) not null,
+    hire_date DATE not null,
+    PRIMARY KEY (empid)
+);
+
+
+CREATE TABLE builder (
+    license_no int not null,
+    name VARCHAR(30) not null,
+    address VARCHAR(40) not null,
+    PRIMARY KEY (license_no)
+);
+
+
+CREATE TABLE building (
+    builder_no int not null,
+    address VARCHAR(40) not null,
+    building_type VARCHAR(20) not null,
+    size INT(6),
+    dateFirstActivity DATE,
+    PRIMARY KEY (address),
+    FOREIGN KEY (builder_no)
+        REFERENCES builder (license_no)
+);
+
+
+CREATE TABLE inspection_type (
+	code VARCHAR(3) not null,
+    insp_type VARCHAR(30) not null,
+    
+    PRIMARY KEY (code)
+);
+
+
+
+CREATE TABLE prerequisites (
+    pre_code VARCHAR(3) not null,
+    prereq VARCHAR(3) not null,
+    FOREIGN KEY (pre_code)
+        REFERENCES inspection_type (code),
+    FOREIGN KEY (prereq)
+        REFERENCES inspection_type (code)
+);
+
+    
+CREATE TABLE Inspection (
+    inspection_id INT AUTO_INCREMENT not null,
+    inspection_date DATE not null,
+    insp_code VARCHAR(3) not null,
+    inspector_id int not null,
+	score INT(3) not null,
+    info VARCHAR(50),
+    building_address varchar(40) not null,
+    
+    PRIMARY KEY (inspection_id),
+    foreign key (insp_code) 
+		references inspection_type(code),
+    FOREIGN KEY (inspector_id)
+        REFERENCES inspector (empid),
+	foreign key (building_address)
+		references building (address)
+);
+
+CREATE TABLE pending_inspection (
+    pending_id INT AUTO_INCREMENT not null,
+    date DATE not null,
+    type CHAR(3) not null,
+    building_address VARCHAR(40) not null,
+    PRIMARY KEY (pending_id),
+    FOREIGN KEY (type)
+        REFERENCES inspection_type (code),
+    FOREIGN KEY (building_address)
+        REFERENCES building (address)
+);
+
+CREATE TABLE inspection_cost (
+    newid INT AUTO_INCREMENT not null,
+    code VARCHAR(3) not null,
+    start_date DATE DEFAULT '1950-01-01',
+    end_date DATE DEFAULT '2100-12-31',
+    Cost INT(4) not null,
+    primary key(newid),
+    FOREIGN KEY (code)
+        REFERENCES inspection_type (code)
+);
+    
