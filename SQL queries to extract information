@@ -1,0 +1,128 @@
+use FODM_project;
+
+--List all buildings (building#, address, type) that have not passed a final (FNL, FN2, FN3) inspection.
+
+SELECT 
+    builder_no, address, building_type
+FROM
+    building
+WHERE
+    address NOT IN (SELECT 
+            building_address
+        FROM
+            inspection
+        WHERE
+            score >= 75 AND insp_code = 'FN3'
+                OR score >= 75 AND insp_code = 'FNL'
+                OR score >= 75 AND insp_code = 'FN2');
+                
+-- 2.	List the id, name of inspectors who have given at least one failing score.
+
+SELECT 
+    empid, insp_name
+FROM
+    inspector
+WHERE
+    empid IN (SELECT DISTINCT
+            inspector_id
+        FROM
+            inspection
+        WHERE
+            Score < 75);               
+
+-- 3.	What inspection type(s) have never been failed?
+
+SELECT DISTINCT
+    insp_code
+FROM
+    Inspection
+WHERE
+    score >= 75
+        AND insp_code NOT IN (SELECT DISTINCT
+            insp_code
+        FROM
+            Inspection
+        WHERE
+            score < 75);
+            
+            
+-- 4.	What is the total cost of all inspections for builder 12345?
+SELECT 
+    building.builder_no, SUM(calculate_cost(inspection.insp_code,inspection.inspection_date))
+FROM
+    inspection
+        INNER JOIN
+    building ON inspection.building_address = building.address
+WHERE
+    building.builder_no = 12345;
+
+-- 5.	What is the average score for all inspections performed by Inspector 102?    
+SELECT 
+    AVG(score)
+FROM
+    inspection
+WHERE
+    inspector_id= 10102;
+ 
+-- 6.	How much revenue did FODB receive for inspections during October 2018? 
+SELECT 
+    SUM(calculate_cost(inspection.insp_code,inspection.inspection_date))
+FROM
+    inspection
+        INNER JOIN
+    inspection_type ON inspection_type.code = inspection.insp_code
+WHERE
+    MONTH(inspection_date) = 10;
+
+-- 7.	How much revenue was generated in 2018 by inspectors with more than 15 years seniority?
+SELECT 
+    SUM(CALCULATE_COST(inspection.insp_code,
+            inspection.inspection_date))
+FROM
+    inspection
+        INNER JOIN
+    inspector ON inspector.empid = inspection.inspector_id
+WHERE
+    YEAR(inspection_date) = '2018'
+        AND hire_date < DATE_SUB(NOW(), INTERVAL 15 YEAR);
+    
+    
+-- 8.	Demonstrate the adding of a new 1600 sq ft residential building for builder #34567, located at 1420 Main St., Lewisville TX.
+
+INSERT INTO `fodm_project`.`building` (`builder_no`,`address`,`building_type`,`size`, `dateFirstActivity`) 
+VALUES ('34567', '1420 Main St., Lewisville TX', 'Residential', '1600', null);
+
+select * from building;
+
+-- 9.	Demonstrate the adding of an inspection on the building you just added. 
+-- This framing inspection occurred on 11/21/2018 by inspector 104, with a score of 50, and note of “work not finished.”
+
+INSERT INTO `fodm_project`.`Inspection` (`inspection_date`,`insp_code`,`inspector_id`,`score`,`info`,`building_address`) 
+VALUES ('2018/11/21', 'FRM', '104', '50', 'work not finished', '1420 Main St., Lewisville TX');
+
+update `fodm_project`.`building` set `dateFirstActivity` = '2018/11/21' where `address` = '1420 Main St., Lewisville TX';
+
+select * from building;
+
+-- 10.	Demonstrate changing the cost of an ELE inspection changed to $150 effective today. 
+update `fodm_project`.`inspection_cost` set `end_date` = '2018/11/19' where `code` = 'ELE' and `end_date` = '2100-12-31';
+
+select * from inspection_cost;
+INSERT INTO `fodm_project`.`inspection_cost` (`code`,`start_date`,`Cost`) VALUES ('ELE','2018-11-20','150');
+
+
+-- 11.	Demonstrate adding of an inspection on the building you just added. 
+-- This electrical inspection occurred on 11/22/2018 by inspector 104, with a score of 60, and note of “lights not completed.”
+
+INSERT INTO `fodm_project`.`Inspection` (`inspection_date`,`insp_code`,`inspector_id`,`score`,`info`,`building_address`) 
+VALUES ('2018/11/22', 'ELE', '104', '60', 'lights not completed', '1420 Main St., Lewisville TX');
+
+select * from Inspection;
+
+-- 12.	Demonstrate changing the message of the FRM inspection on 11/2/2018 by inspector #105 to “all work completed per checklist.”
+update `fodm_project`.`Inspection` set `info` = 'all work completed per checklist' where `insp_code` = 'FRM' and `inspector_id` = '10105' 
+and inspection_date = '2018-11-2';
+
+-- 13.	Demonstrate the adding of a POL inspection by inspector #103 on 11/28/2018 on the first building associated with builder 45678.
+INSERT INTO `fodm_project`.`Inspection` (`inspection_date`,`insp_code`,`inspector_id`,`score`,`info`,`building_address`) 
+VALUES ('2018/11/28', 'POL', '103', '60', null, '100 Winding Wood, Carrollton, TX');
